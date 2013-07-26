@@ -46,8 +46,8 @@
 <script>
     var data = [];
     title = getQueryVariable("title")
-    $(document).attr('title', title.replace(/_/gi, ' '));
-    $('#title').html(title.replace(/_/gi, ' '));
+    $(document).attr('title', title.replace(/\%20/gi, ' '));
+    $('#title').html(title.replace(/\%20/gi, ' '));
     $.getJSON("/photos?album=" + getQueryVariable("album"), function(d){
         $.each(d, function (index, value) {
                 $.each(value, function (index, photo) {
@@ -63,7 +63,7 @@ $(document).ready(function() {
     var items = [];
     $.getJSON("/albums", function(data){
         $.each(data, function (index, value) {
-            items.push('<li><a href="/gallery.html?album=' + value.id + '"><i class="icon-camera"></i>&nbsp;'  + value.title.replace(/_/gi, ' ') + '</a></li>')
+            items.push('<li><a href="/gallery.html?album=' + value.id + '&title=' + value.title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + value.title.replace(/_/gi, ' ') + '</a></li>')
         });
     $('#slidecontent ul').append( items.join(''));
     $("#slideclick").on("click", function () {
