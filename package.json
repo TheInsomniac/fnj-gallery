@@ -1,6 +1,6 @@
 {
   "dependencies" : {
-    "express"   :  "0.3.x",
+    "express"   :  "3.3.x",
     "flickr-oauth" :  "0.0.1"
   }
 }
