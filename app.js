@@ -1,15 +1,15 @@
-var fs = require('fs');
-var config = JSON.parse(fs.readFileSync('config.json'));
+var fs = require('fs'),
+    config = JSON.parse(fs.readFileSync('config.json'));
 
-var flickr = require('./lib/flickr.js');
-var USER_ID = config.user_id;
-var OAUTH_TOKEN = config.oauth_token;
-var OAUTH_SECRET = config.oauth_secret;
+var flickr = require('./lib/photos.js'),
+    USER_ID = config.user_id,
+    OAUTH_TOKEN = config.oauth_token,
+    OAUTH_SECRET = config.oauth_secret;
 
-var express = require('express');
-var app = new express();
-var host = config.host;
-var port = config.port;
+var express = require('express'),
+    app = new express(),
+    host = config.host,
+    port = config.port;
 
 var albums;
 flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
