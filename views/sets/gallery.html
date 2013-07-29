@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-simplex.css"/>
+    <link rel="stylesheet" type="text/css" href="css/site_layout.css"/>
+    <link rel="stylesheet" type="text/css" href="css/swipebox.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gallery.css"/>
+</head>
+<body>
+ <div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12" id="hideLeft">
+            <div class="navbar navbar-top">
+                <div class="navbar-inner">
+                    <div id="title" class="brand">Photos</div>
+                    <ul id="menu" class="nav">
+                            <li><a href="index.html"><i class="icon-picture">&nbsp;</i>&nbsp;Home</a></li>
+                    </ul>
+                        <!--<div class="brand" style="float: right;">DESCR</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div id="loading"></div>
+            <div id="gallery"></div>
+        </div>
+    </div>
+ </div>
+ <div id="slideout">
+    <div id="slideclick"></div>
+    <div id="slidecontent">
+        <h3>Albums</h3>
+        <ul class="unstyled">
+        </ul>
+    </div>
+ </div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="js/jquery.loadImage.js"></script>
+<script src="js/jquery.swipebox.js"></script>
+<script src="js/get_url_params.js"></script>
+<script>
+    var data = [];
+    title = getQueryVariable("title")
+    $(document).attr('title', title.replace(/\%20/gi, ' '));
+    $('#title').html(title.replace(/\%20/gi, ' '));
+    $.getJSON("/photos?album=" + getQueryVariable("album"), function(d){
+        $.each(d, function (index, value) {
+                $.each(value, function (index, photo) {
+                    data.push({large:value.large,
+                               thumb:value.thumb});
+                });
+        });
+    $.getScript("js/gallery.js");
+    });
+</script>
+<script>
+$(document).ready(function() {
+    var items = [];
+    $.getJSON("/albums", function(data){
+        //convert object to array so that browsers sort the same.
+        //jQuery .each traverses differently in various browsers.
+        var keys = Object.keys(data);
+        for (var i = 0, len = keys.length; i < len; i++) {
+            items.push('<li><a href="/gallery.html?album=' + data[keys[i]].id + '&title=' + data[keys[i]].title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + data[keys[i]].title.replace(/_/gi, ' ') + '</a></li>');
+        }
+   $('#slidecontent ul').append( items.join(''));
+   $("#slideclick").on("click", function () {
+           if ($(this).parent().hasClass("popped")) {
+               $(this).parent().animate({left: '-222px'}, {queue: false, duration: 500}).removeClass("popped");
+           } else {
+               $(this).parent().animate({left: "0px" }, {queue: false, duration: 500}).addClass("popped");
+           }
+       });
+    });
+});
+</script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 #Flickr-NodeJS-JQuery (FNJ Gallery)
 
 *Note: This is my first attempt at **anything** javascript / NODE.js*  
-
 This, appearance wise, is identical to my "Flickr-Python-JQuery" gallery but is based  
 entirely on node.js and does not use static JSON files.  
 
@@ -11,7 +10,37 @@ and photos on the fly.
 ###Installation:  
     clone this repository
     npm install
-    edit config.json to suit your needs. (You can skip the oauth parts at this time)
+
+###Configuration:  
+    edit config.json to suit your needs. 
+    (You can skip the oauth parts at this time)
+    
+    If '"debug": true' then json files will be written for the data received from
+    Flickr for inspection purposes. If '"runServer": false' as well then the
+    webserver will not start either. The data will be written and then the app
+    will exit.
+    
+    If your photos are arranged in sets this will produce a "flat" gallery where
+    all albums are at the root of the listings.
+    
+    If your photosets on flickr are arranged into sets then change "use" to collections.
+    This will enable recursive listings such that the Collection name is the Album
+    root and the collections beneath are the sub-albums.
+    
+    e.g. "My Trip to Italy" -> "Day 1"
+    
+    {
+        "api_key": "YourApiKeyHere", 
+        "api_secret": "YourApiSecretHere", 
+        "user_id": "YourUserIdHere", 
+        "oauth_token": "YourOauthTokenHere", 
+        "oauth_secret": "YourOauthSecretHere", 
+        "use": "sets",
+        "host": "127.0.0.1", 
+        "port": "8080", 
+        "debug": false, 
+        "runServer": true
+    }  
 
 ###Getting auth tokens for Flickr (from flickr-oauth):  
 ######Here Goes:

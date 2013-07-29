@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-simplex.css"/>
+    <link rel="stylesheet" type="text/css" href="css/site_layout.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gallery.css"/>
+</head>
+<body>
+ <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12" id="hideLeft">
+                <div class="navbar navbar-top">
+                    <div class="navbar-inner">
+                        <div class="brand">Photo Gallery</div>
+                        <!--<ul id="menu" class="nav">
+                                <li><a href="#"><i class="icon-picture">&nbsp;</i>&nbsp;Home</a></li>
+                        </ul>-->
+                            <!--<div class="brand" style="float: right;">DESCR</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div style="position: relative; top: 150px; float: none;
+                margin-left: auto; margin-right: auto;" class="span7">
+                <div class="well well-large" style="background: rgba(127, 128, 134, 0.6)">
+                <h3 class="text-center" style="color: #faebd7;">“When words become unclear, I shall focus with photographs. When images become inadequate, I shall be content with silence.”</h3>
+
+                <a href="http://www.anseladams.com/"
+                   style="float: right; text-decoration: none; color: #faebd7;
+                   font-family: 'Josefin Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                   font-size: larger;">
+                        - Ansel Adams</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+ <div id="slideout">
+        <div id="slideclick"></div>
+        <div id="slidecontent">
+            <h3>Albums</h3>
+            <ul class="unstyled">
+            </ul>
+        </div>
+    </div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    var items = [];
+    $.getJSON("/albums", function(data){
+        //convert object to array so that browsers sort the same.
+        //jQuery .each traverses differently in various browsers.
+        var keys = Object.keys(data);
+        for (var i = 0, len = keys.length; i < len; i++) {
+            items.push('<li><a href="/gallery.html?album=' + data[keys[i]].id + '&title=' + data[keys[i]].title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + data[keys[i]].title.replace(/_/gi, ' ') + '</a></li>');
+        }
+   $('#slidecontent ul').append( items.join(''));
+   $("#slideclick").on("click", function () {
+           if ($(this).parent().hasClass("popped")) {
+               $(this).parent().animate({left: '-222px'}, {queue: false, duration: 500}).removeClass("popped");
+           } else {
+               $(this).parent().animate({left: "0px" }, {queue: false, duration: 500}).addClass("popped");
+           }
+       });
+    });
+});
+</script>
+</body>
+</html>
