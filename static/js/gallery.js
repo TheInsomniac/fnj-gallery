@@ -5,7 +5,7 @@ $(function(){
 
 	var page = 0,
 		per_page = 100,
-		photo_default_size = 120,
+		photo_default_size = 150,
 		picture_width = photo_default_size,
 		picture_height = photo_default_size,
 		max_w_photos, max_h_photos
