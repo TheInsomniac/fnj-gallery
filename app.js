@@ -16,6 +16,12 @@ var debug = config.debug,
     use = config.use,
     albums = null;
 
+if (debug) {
+    if (!fs.existsSync('./tmp')) {
+        fs.mkdirSync('./tmp');
+    }
+}
+
 // exposes '/'  and any files contained within static folder
 // used for css/ and js/ files.
 app.use(express.static(__dirname + '/static'));
@@ -27,7 +33,7 @@ if (use === "sets"){
         albums = this;
         if (debug) {
             //console.log(JSON.stringify(albums, null, 4));
-            fs.writeFileSync('./tmp/albums-parsed.json',
+            fs.writeFileSync('./tmp/sets-parsed.json',
                 JSON.stringify(albums, null, 4));
         }
     });
