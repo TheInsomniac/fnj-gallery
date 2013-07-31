@@ -1,7 +1,7 @@
 var fs = require('fs'),
-    config = JSON.parse(fs.readFileSync('config.json'));
+    config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
 
-var flickr = require('./lib/photos.js'),
+var flickr = require(__dirname + '/lib/photos.js'),
     USER_ID = config.user_id,
     OAUTH_TOKEN = config.oauth_token,
     OAUTH_SECRET = config.oauth_secret;
@@ -17,8 +17,8 @@ var debug = config.debug,
     albums = null;
 
 if (debug) {
-    if (!fs.existsSync('./tmp')) {
-        fs.mkdirSync('./tmp');
+    if (!fs.existsSync(__dirname + '/tmp')) {
+        fs.mkdirSync(__dirname +'/tmp');
     }
 }
 
@@ -33,7 +33,7 @@ if (use === "sets"){
         albums = this;
         if (debug) {
             //console.log(JSON.stringify(albums, null, 4));
-            fs.writeFileSync('./tmp/sets-parsed.json',
+            fs.writeFileSync(__dirname + '/tmp/sets-parsed.json',
                 JSON.stringify(albums, null, 4));
         }
     });
@@ -44,7 +44,7 @@ if (use === "sets"){
         albums = this;
         if (debug) {
             //console.log(JSON.stringify(albums, null, 4));
-            fs.writeFileSync('./tmp/collections-parsed.json',
+            fs.writeFileSync(__dirname +'/tmp/collections-parsed.json',
                 JSON.stringify(albums, null, 4));
         }
     });
