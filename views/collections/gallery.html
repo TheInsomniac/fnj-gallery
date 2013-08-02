@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8"/>
     <title>Photo Gallery</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-simplex.css"/>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/site_layout.css"/>
     <link rel="stylesheet" type="text/css" href="css/swipebox.css"/>
     <link rel="stylesheet" type="text/css" href="css/gallery.css"/>
@@ -40,8 +40,8 @@
     </div>
  </div>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="js/jquery.loadImage.js"></script>
-<script src="js/jquery.swipebox.js"></script>
+<script src="js/jquery.loadImage-min.js"></script>
+<script src="js/jquery.swipebox-min.js"></script>
 <script src="js/get_url_params.js"></script>
 <script>
     var data = [];
@@ -55,7 +55,7 @@
                                thumb:value.thumb});
                 });
         });
-    $.getScript("js/gallery.js");
+    $.getScript("js/gallery-min.js");
     });
 </script>
 <script>
@@ -71,7 +71,7 @@ $(document).ready(function() {
                 item.push('<li><a href="/gallery.html?album=' + data[keys[i]].albums[x].id + '&title=' + data[keys[i]].albums[x].title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + data[keys[i]].albums[x].title.replace(/_/gi, ' ') + '</a></li>');
             }
             if (data[keys[i]].title !== "Root") {
-            items.unshift('<li class="expanded"><a href=#><i class="icon-folder-close"></i>&nbsp;' + data[keys[i]].title + '</a><ul>' + item.join('') + '</ul></li>');
+            items.unshift('<li class="expanded"><a href=#><i class="icon-folder-close"></i>&nbsp;' + data[keys[i]].title + '</a><ul class="sublist">' + item.join('') + '</ul></li>');
             } else {
                 items.push(item.join(''));
             }

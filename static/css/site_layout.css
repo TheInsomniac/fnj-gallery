@@ -1,5 +1,5 @@
 /* COMMON */
-/*@import url('//fonts.googleapis.com/css?family=Josefin+Sans:300,400,700');*/
+@import url('//fonts.googleapis.com/css?family=Josefin+Sans:300,400,700');
 
 body {
     overflow-y:auto;
@@ -11,8 +11,32 @@ body {
     height: 100%;
     width: 100%;
     position: absolute;
-    /*font-family: "Josefin Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+    font-family: "Josefin Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+
+/* Embossed Look for class="depth" */
+.depth {
+    padding-left: 40px;
+    top: 50px;
+    display: block;
+    color: black;
+    font: bold 1.2em Arial, sans-serif;
+    position: relative;
+}
+
+.depth:before, .depth:after {
+    /*content: attr(title);*/
+    content: '\2190 Click Me';
+    padding-left: 40px;
+    /*padding: 50px;*/
+    color: rgba(255,255,255,.1);
+    position: absolute;
+}
+
+.depth:before { top: 1px; left: 1px }
+.depth:after  { top: 2px; left: 2px }
+/* End here */
+
 
 #center {
     float: none;
@@ -36,6 +60,7 @@ body {
     color: rgba(0, 204, 255, 0.96);
     text-shadow: 0 1px 0 rgb(0,0,0);
     opacity: 0.9;
+    font-weight: bold;
     }
 
 .navbar .brand:hover {

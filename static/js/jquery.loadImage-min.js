@@ -1,0 +1,1 @@
+$.loadImage=function(d){return $.Deferred(function(b){function c(){a.onload=null;a.onerror=null;a.onabort=null;b.reject(a)}var a=new Image;a.onload=function(){a.onload=null;a.onerror=null;a.onabort=null;b.resolve(a)};a.onerror=c;a.onabort=c;a.src=d}).promise()};

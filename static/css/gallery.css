@@ -11,7 +11,7 @@
 
 #slideclick {
     position: relative;
-    top: 100px;
+    top: 150px;
     /*left: 20px;*/
     float:right;
     height:40px;
@@ -74,8 +74,8 @@
 #slidecontent a {
     display: block;
     color: #faebd7;
-    font-size: 1.1em;
-    font-weight: 300;
+    font-size: 1.2em;
+    font-weight: bold;
     text-decoration: none;
     border-bottom: 1px solid rgba(41, 41, 41, 0.53);
     /*text-transform: uppercase;*/
@@ -85,8 +85,8 @@
 
 #slidecontent a:hover {
     color: rgba(0, 204, 255, 0.96);
-    font-size: 1.1em;
-    font-weight: bolder;
+    /*font-size: 1.2em;*/
+    /*font-weight: bolder;*/
     }
 
 #slidecontent li.active > a {
@@ -111,6 +111,10 @@
     .icon-camera, .icon-folder-close, .icon-folder-open, .icon-home {
         opacity: 0.60;
         }
+
+.sublist {
+    list-style: none;
+}
 
 /* END GALLERY PULL-OUT */
 
@@ -215,3 +219,14 @@
     /*----------------------------
              END GALLERY
     -----------------------------*/
+
+    .pointPointArrow{
+    width:16px;
+    height:16px;
+    background:url('img/arrow.png') no-repeat;
+    position:absolute;
+    display:none;
+    z-index: 100000;
+    top:0;
+    left:0;
+}
