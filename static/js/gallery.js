@@ -8,7 +8,7 @@ $(function(){
 		photo_default_size = 150,
 		picture_width = photo_default_size,
 		picture_height = photo_default_size,
-		max_w_photos, max_h_photos
+		max_w_photos, max_h_photos;
 		//data = [];
 
 	// Global variables that cache selectors
@@ -138,8 +138,7 @@ $(function(){
 
 	
 	// Monitor window resizing or changing device orientation
-	win.on('resize', function(e){
-
+	win.on('resize', function(e) {
 		var width = $("#gallery").innerWidth(),
 			height = $(window).height() - 100,
             //height = $(window).height() - $("div.navbar.navbar-top").height(),
@@ -258,7 +257,7 @@ $(function(){
 
 		// The first page has only one arrow,
 		// so we decrease the per_page argument with 1
-		if(page == 0){
+		if(page === 0){
 			return per_page - 1;
 		}
 
@@ -281,7 +280,7 @@ $(function(){
 			p = page;
 		}
 
-		if(p == 0){
+		if(p === 0){
 			return 0;
 		}
 

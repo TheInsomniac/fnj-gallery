@@ -1,6 +1,3 @@
-/**
- * Created by mark on 2013-07-19.
- */
 function getQueryVariable(variable)
 {
        var query = window.location.search.substring(1);

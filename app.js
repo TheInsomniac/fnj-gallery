@@ -1,12 +1,13 @@
-var fs = require('fs'),
-    config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
+/* jshint -W065 */
+var fs = require("fs"),
+    config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
 
-var flickr = require(__dirname + '/lib/photos.js'),
+var flickr = require(__dirname + "/lib/photos.js"),
     USER_ID = config.user_id,
     OAUTH_TOKEN = config.oauth_token,
     OAUTH_SECRET = config.oauth_secret;
 
-var express = require('express'),
+var express = require("express"),
     app = new express(),
     host = config.host,
     port = config.port;
@@ -17,47 +18,47 @@ var debug = config.debug,
     albums = null;
 
 if (debug) {
-    if (!fs.existsSync(__dirname + '/tmp')) {
-        fs.mkdirSync(__dirname +'/tmp');
+    if (!fs.existsSync(__dirname + "/tmp")) {
+        fs.mkdirSync(__dirname + "/tmp");
     }
 }
 
-// exposes '/'  and any files contained within static folder
+// exposes "/"  and any files contained within static folder
 // used for css/ and js/ files.
-app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + "/static"));
 
-if (use === "sets"){
-    app.use(express.static(__dirname + '/views/sets'));
+if (use === "sets") {
+    app.use(express.static(__dirname + "/views/sets"));
     flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
         "use strict";
         albums = this;
         if (debug) {
             //console.log(JSON.stringify(albums, null, 4));
-            fs.writeFileSync(__dirname + '/tmp/sets-parsed.json',
+            fs.writeFileSync(__dirname + "/tmp/sets-parsed.json",
                 JSON.stringify(albums, null, 4));
         }
     });
 } else if (use === "collections") {
-    app.use(express.static(__dirname + '/views/collections'));
+    app.use(express.static(__dirname + "/views/collections"));
     flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
         "use strict";
         albums = this;
         if (debug) {
             //console.log(JSON.stringify(albums, null, 4));
-            fs.writeFileSync(__dirname +'/tmp/collections-parsed.json',
+            fs.writeFileSync(__dirname + "/tmp/collections-parsed.json",
                 JSON.stringify(albums, null, 4));
         }
     });
 }
 
-// exposes '/albums'
-app.get('/albums', function (req, res) {
+// exposes "/albums"
+app.get("/albums", function (req, res) {
     "use strict";
     res.json(albums);
 });
 
-// exposes '/albums/update'
-app.get('/albums/update', function (req, res) {
+// exposes "/albums/update"
+app.get("/albums/update", function (req, res) {
     "use strict";
     if (use === "sets"){
         flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID,
@@ -76,8 +77,8 @@ app.get('/albums/update', function (req, res) {
     }
 });
 
-// exposes '/photos?album=ALBUM_ID'
-app.get('/photos', function (req, res) {
+// exposes "/photos?album=ALBUM_ID"
+app.get("/photos", function (req, res) {
     "use strict";
     if (req.query.album) {
         flickr.getPhotoSetPhotos(OAUTH_TOKEN, OAUTH_SECRET, req.query.album,
