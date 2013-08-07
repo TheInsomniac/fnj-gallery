@@ -15,6 +15,11 @@ body {
     font-family: "Josefin Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+
 .pointPointArrow{
     width:16px;
     height:16px;
@@ -101,6 +106,7 @@ body {
 .navbar .nav .active>a, .navbar .nav .active>a:hover {
     background: None;
     -webkit-box-shadow: None;
+    -moz-box-shadow: None;
     box-shadow: None;
     color: rgba(0, 204, 255, 0.96);
     font-weight: bold;
@@ -114,7 +120,7 @@ body {
     position:absolute;
     width:262px;
     height:100%;
-    top: 0px;
+    top: 0;
     left:-222px;
     }
 
