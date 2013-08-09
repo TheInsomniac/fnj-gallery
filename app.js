@@ -1,99 +1,43 @@
-/* jshint -W065 */
-var fs = require("fs"),
-  config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
+var fs = require("fs");
+config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
 
-var flickr = require(__dirname + "/lib/photos.js"),
-  USER_ID = config.user_id,
-  OAUTH_TOKEN = config.oauth_token,
-  OAUTH_SECRET = config.oauth_secret;
+var host = config.host,
+    port = config.port;
 
-var express = require("express"),
-  app = new express(),
-  host = config.host,
-  port = config.port;
+// create express app globally
+express = require("express"),
+app = new express();
 
-var debug = config.debug,
-  runServer = config.runServer,
-  use = config.use,
-  albums = null;
+// exposes "/"  and any files contained within static folder
+// used for css/ and js/ files.
+app.use(express.static(__dirname + "/static"));
 
+// get debug enabled/disabled from config
+debug = config.debug;
+// create tmp folder if !exists when debug enabled
 if (debug) {
   if (!fs.existsSync(__dirname + "/tmp")) {
     fs.mkdirSync(__dirname + "/tmp");
   }
 }
 
-// exposes "/"  and any files contained within static folder
-// used for css/ and js/ files.
-app.use(express.static(__dirname + "/static"));
+// create empty global variable to hold album data (we'll call this a cache)
+albums = null;
 
-if (use === "sets") {
-  app.use(express.static(__dirname + "/views/sets"));
-  flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-    "use strict";
-    albums = this;
-    if (debug) {
-      //console.log(JSON.stringify(albums, null, 4));
-      fs.writeFileSync(__dirname + "/tmp/sets-parsed.json",
-          JSON.stringify(albums, null, 4));
-    }
-  });
-} else if (use === "collections") {
-  app.use(express.static(__dirname + "/views/collections"));
-  flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-    "use strict";
-    albums = this;
-    if (debug) {
-      //console.log(JSON.stringify(albums, null, 4));
-      fs.writeFileSync(__dirname + "/tmp/collections-parsed.json",
-        JSON.stringify(albums, null, 4));
-    }
-  });
-}
+// load flickr module globally for use in routes
+flickr = require(__dirname + "/lib/flickr.js");
+USER_ID = config.user_id;
+OAUTH_TOKEN = config.oauth_token;
+OAUTH_SECRET = config.oauth_secret;
 
-// exposes "/albums"
-app.get("/albums", function (req, res) {
-  "use strict";
-  res.json(albums);
-});
+// get collections or sets flag from config
+use = config.use;
 
-// exposes "/albums/update"
-app.get("/albums/update", function (req, res) {
-  "use strict";
-  if (use === "sets") {
-    flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-      albums = this;
-      res.send("<h3>Albums Updated from Sets</h3></br>" +
-          "<a href=/index.html>Return Home</a>");
-    });
-  } else if (use === "collections") {
-      flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-        albums = this;
-        res.send("<h3>Albums Updated from Collections</h3></br>" +
-            "<a href=/index.html>Return Home</a>");
-      });
-    }
-});
+// load modules from "./routes" as defined in index.js 
+require('./routes');
 
-// exposes "/photos?album=ALBUM_ID"
-app.get("/photos", function (req, res) {
-  "use strict";
-  if (req.query.album) {
-      flickr.getPhotoSetPhotos(OAUTH_TOKEN, OAUTH_SECRET, req.query.album,
-          function () {
-              if (this.length > 0) {
-                  res.json(this);
-                  //res.send(JSON.stringify(this));
-              } else if (this.length === 0) {
-                  res.send("Incorrect Album Specified");
-              }
-          });
-  } else {
-      res.send("No Album Specified!");
-  }
-});
-
-if (runServer) {
+// determine if we want to run the http server. Loaded from config
+if (config.runServer) {
   app.listen(port, function () {
       "use strict";
       console.log("Server listening on:\nhttp://" + host + ":" + port +
