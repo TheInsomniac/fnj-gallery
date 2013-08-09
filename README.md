@@ -9,6 +9,11 @@ and photos on the fly.
 
 ###Installation:  
     git clone git://github.com/manxam/fnj-gallery.git
+    
+#####For Version 1 stable which uses node, express, and jQuery and no templating engine:
+    git checkout version_1
+    
+#####All:
     npm install
 
 ###Configuration:  
