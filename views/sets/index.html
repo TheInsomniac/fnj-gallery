@@ -48,34 +48,11 @@
       </div>
   </div>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="js/point.js"></script>
-<script src="js/transform.js"></script>
+<script src="js/prod/point-min.js"></script>
+<script src="js/prod/transform-min.js"></script>
+<script src="js/prod/albums-min.js"></script>
 <script>
-$(document).ready(function() {
-  var items = [];
-  $.getJSON("/albums", function(data){
-    //convert object to array so that browsers sort the same.
-    //jQuery .each traverses differently in various browsers.
-    var keys = Object.keys(data);
-    for (var i = 0, len = keys.length; i < len; i++) {
-      items.push('<li><a href="/gallery.html?album=' + data[keys[i]].id + '&title=' + data[keys[i]].title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + data[keys[i]].title.replace(/_/gi, ' ') + '</a></li>');
-    }
-    $('#slidecontent ul').append( items.join(''));
-    $("#slideclick").on("click", function () {
-      if ($(this).parent().hasClass("popped")) {
-         $(this).parent().animate({left: '-222px'}, {queue: false, duration: 500}).removeClass("popped");
-         //$('.depth').css("opacity", "1");
-         $('#slideclick').pointPoint();
-
-      } else {
-         $(this).parent().animate({left: "0px" }, {queue: false, duration: 500}).addClass("popped");
-         //$('.depth').css("opacity", "0");
-         $('#slideclick').pointPoint().destroyPointPoint();
-      }
-    });
-  });
-  $('#slideclick').pointPoint();
-});
+  getSets();
 </script>
 </body>
 </html>

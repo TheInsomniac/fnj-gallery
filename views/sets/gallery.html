@@ -39,12 +39,13 @@
   </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="js/jquery.loadImage.js"></script>
-<script src="js/jquery.swipebox.js"></script>
-<script src="js/get_url_params.js"></script>
+<script src="js/prod/jquery.loadImage-min.js"></script>
+<script src="js/prod/jquery.swipebox-min.js"></script>
+<script src="js/prod/get_url_params-min.js"></script>
+<script src="js/prod/albums-min.js"></script>
 <script>
   var data = [];
-  title = getQueryVariable("title")
+  var title = getQueryVariable("title")
   $(document).attr('title', title.replace(/\%20/gi, ' '));
   $('#title').html(title.replace(/\%20/gi, ' '));
   $.getJSON("/photos?album=" + getQueryVariable("album"), function(d){
@@ -54,29 +55,9 @@
                              thumb:value.thumb});
               });
       });
-  $.getScript("js/gallery.js");
+  $.getScript("js/prod/gallery-min.js");
   });
-</script>
-<script>
-$(document).ready(function() {
-  var items = [];
-  $.getJSON("/albums", function(data){
-    //convert object to array so that browsers sort the same.
-    //jQuery .each traverses differently in various browsers.
-    var keys = Object.keys(data);
-    for (var i = 0, len = keys.length; i < len; i++) {
-        items.push('<li><a href="/gallery.html?album=' + data[keys[i]].id + '&title=' + data[keys[i]].title.replace(/_/gi, ' ') + '"><i class="icon-camera"></i>&nbsp;'  + data[keys[i]].title.replace(/_/gi, ' ') + '</a></li>');
-    }
-    $('#slidecontent ul').append( items.join(''));
-    $("#slideclick").on("click", function () {
-      if ($(this).parent().hasClass("popped")) {
-         $(this).parent().animate({left: '-222px'}, {queue: false, duration: 500}).removeClass("popped");
-      } else {
-         $(this).parent().animate({left: "0px" }, {queue: false, duration: 500}).addClass("popped");
-      }
-    });
-  });
-});
+  getSets();
 </script>
 </body>
 </html>
