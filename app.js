@@ -18,22 +18,24 @@ var express = require("express"),
 
 app.use(express.compress());
 
+// exposes "/"  and any files contained within static folder
+// used for css files.
+app.use(express.static(__dirname + "/static/css"));
+
 app.configure("production", function(){
   "use strict";
+  app.use(express.static(__dirname + "/static/js/prod"));
   debug = false;
 });
 
 app.configure("development", function(){
   "use strict";
+  app.use(express.static(__dirname + "/static/js/dev"));
   debug = true;
   if (!fs.existsSync(__dirname + "/tmp")) {
     fs.mkdirSync(__dirname + "/tmp");
   }
 });
-
-// exposes "/"  and any files contained within static folder
-// used for css/ and js/ files.
-app.use(express.static(__dirname + "/static"));
 
 // create empty global variable to hold album data (we'll call this a cache :P )
 var albums = null;
@@ -92,10 +94,13 @@ app.get("/photos", function (req, res) {
   if (req.query.album) {
       flickr.getPhotoSetPhotos(OAUTH_TOKEN, OAUTH_SECRET, req.query.album,
           function () {
-              if (this.length > 0) {
+              if (this.length) {
                   res.json(this);
-                  //res.send(JSON.stringify(this));
-              } else if (this.length === 0) {
+                  if (debug) {
+                    fs.writeFileSync(__dirname + "/tmp/photoset-" + req.query.album +
+                                     "-parsed.json", JSON.stringify(this, null, 4));
+                  }
+              } else {
                   res.send("Incorrect Album Specified");
               }
           });

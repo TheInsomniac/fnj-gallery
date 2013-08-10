@@ -16,11 +16,11 @@ edit config.json to suit your needs.
 (You can skip the oauth parts at this time)  
 
 If '"node_env": "development"' then json files will be written for the data received from
-Flickr for inspection purposes. 
-Else, set to "production" to disable this behavior.  
-
-If '"runServer": false' as well then the webserver will not start either. The data will be written and then the app
+Flickr to 'tmp' for inspection purposes and the JS files served will be non-minified for easier debugging. 
+If '"runServer": false' as well then the webserver will not start either. The photoset/collection data will be written and then the app
 will exit.  
+
+Else, set to "production" to disable this behavior. JSON files will not be written and JS files served will be the minified versions.    
 
 If your photos are arranged in sets this will produce a "flat" gallery where
 all albums are at the root of the listings.  

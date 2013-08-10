@@ -5,8 +5,8 @@
   <meta charset="utf-8"/>
   <title>Photo Gallery</title>
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" type="text/css" href="css/site.css"/>
-  <link rel="stylesheet" type="text/css" href="css/swipebox.css"/>
+  <link rel="stylesheet" type="text/css" href="site.css"/>
+  <link rel="stylesheet" type="text/css" href="swipebox.css"/>
 </head>
 <body>
 <div class="container-fluid">
@@ -39,10 +39,10 @@
   </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="js/prod/jquery.loadImage-min.js"></script>
-<script src="js/prod/jquery.swipebox-min.js"></script>
-<script src="js/prod/get_url_params-min.js"></script>
-<script src="js/prod/albums-min.js"></script>
+<script src="jquery.loadImage.js"></script>
+<script src="jquery.swipebox.js"></script>
+<script src="get_url_params.js"></script>
+<script src="albums.js"></script>
 <script>
   var data = [];
   var title = getQueryVariable("title");
@@ -55,7 +55,7 @@
                              thumb:value.thumb});
               });
       });
-  $.getScript("js/prod/gallery-min.js");
+  $.getScript("gallery.js");
   });
   getCollections();
 </script>
