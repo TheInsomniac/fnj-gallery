@@ -9,20 +9,17 @@ and photos on the fly.
 
 ###Installation:  
     git clone git://github.com/manxam/fnj-gallery.git
-    
-#####For Version 1 stable which uses node, express, and jQuery and no templating engine:
-    git checkout version_1
-    
-#####All:
     npm install
 
 ###Configuration:  
 edit config.json to suit your needs. 
 (You can skip the oauth parts at this time)  
 
-If '"debug": true' then json files will be written for the data received from
-Flickr for inspection purposes. If '"runServer": false' as well then the
-webserver will not start either. The data will be written and then the app
+If '"node_env": "development"' then json files will be written for the data received from
+Flickr for inspection purposes. 
+Else, set to "production" to disable this behavior.  
+
+If '"runServer": false' as well then the webserver will not start either. The data will be written and then the app
 will exit.  
 
 If your photos are arranged in sets this will produce a "flat" gallery where
@@ -43,7 +40,7 @@ _e.g. "My Trip to Italy" -> "Day 1"_
         "use": "sets",
         "host": "127.0.0.1", 
         "port": "8080", 
-        "debug": false, 
+        "node_env": production, 
         "runServer": true
     }  
 
@@ -74,3 +71,7 @@ run node REPL:
 ###Running:  
     node app.js
 **Voila!**
+
+###Flickr sets/collections changes:  
+*The album data is generated upon the startup of node and is kept in memory as-is. If changes are made to your photosets on Flickr then either restart the app or go to **http://server.url/albums/update** to force a regeneration*  
+

@@ -1,40 +1,108 @@
-var fs = require("fs");
-global.config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
+var fs = require("fs"),
+    config = JSON.parse(fs.readFileSync(__dirname + "/config.json"));
 
 var host = config.host,
-    port = config.port;
+    port = config.port,
+    debug;
 
-// create express app globally
-global.express = require("express");
-global.app = new express();
+var flickr = require(__dirname + "/lib/flickr.js"),
+    USER_ID = config.user_id,
+    OAUTH_TOKEN = config.oauth_token,
+    OAUTH_SECRET = config.oauth_secret;
+
+process.env.NODE_ENV = config.node_env;
+
+// create express app instance
+var express = require("express"),
+    app = new express();
+
+app.use(express.compress());
+
+app.configure("production", function(){
+  "use strict";
+  debug = false;
+});
+
+app.configure("development", function(){
+  "use strict";
+  debug = true;
+  if (!fs.existsSync(__dirname + "/tmp")) {
+    fs.mkdirSync(__dirname + "/tmp");
+  }
+});
 
 // exposes "/"  and any files contained within static folder
 // used for css/ and js/ files.
 app.use(express.static(__dirname + "/static"));
 
-// get debug enabled/disabled from config
-global.debug = config.debug;
-// create tmp folder if !exists when debug enabled
-if (debug) {
-  if (!fs.existsSync(__dirname + "/tmp")) {
-    fs.mkdirSync(__dirname + "/tmp");
-  }
+// create empty global variable to hold album data (we'll call this a cache :P )
+var albums = null;
+// fill the albums array
+if (config.use === "sets") {
+  app.use(express.static(__dirname + "/views/sets"));
+  flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
+    "use strict";
+    albums = this;
+    if (debug) {
+      //console.log(JSON.stringify(albums, null, 4));
+      fs.writeFileSync(__dirname + "/tmp/sets-parsed.json",
+          JSON.stringify(albums, null, 4));
+    }
+  });
+} else if (config.use === "collections") {
+  app.use(express.static(__dirname + "/views/collections"));
+  flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
+    "use strict";
+    albums = this;
+    if (debug) {
+      //console.log(JSON.stringify(albums, null, 4));
+      fs.writeFileSync(__dirname + "/tmp/collections-parsed.json",
+        JSON.stringify(albums, null, 4));
+    }
+  });
 }
 
-// create empty global variable to hold album data (we'll call this a cache)
-global.albums = null;
+// exposes "/albums"
+app.get("/albums", function (req, res) {
+  "use strict";
+  res.json(albums);
+});
 
-// load flickr module globally for use in routes
-global.flickr = require(__dirname + "/lib/flickr.js");
-global.USER_ID = config.user_id;
-global.OAUTH_TOKEN = config.oauth_token;
-global.OAUTH_SECRET = config.oauth_secret;
+// exposes "/albums/update"
+app.get("/albums/update", function (req, res) {
+  "use strict";
+  if (config.use === "sets") {
+    flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
+      albums = this;
+      res.send("<h3>Albums Updated from Sets</h3></br>" +
+          "<a href=/index.html>Return Home</a>");
+    });
+  } else if (config.use === "collections") {
+      flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
+        albums = this;
+        res.send("<h3>Albums Updated from Collections</h3></br>" +
+            "<a href=/index.html>Return Home</a>");
+      });
+    }
+});
 
-// get collections or sets flag from config
-global.use = config.use;
-
-// load modules from "./routes" as defined in index.js 
-require("./routes");
+// exposes "/photos?album=ALBUM_ID"
+app.get("/photos", function (req, res) {
+  "use strict";
+  if (req.query.album) {
+      flickr.getPhotoSetPhotos(OAUTH_TOKEN, OAUTH_SECRET, req.query.album,
+          function () {
+              if (this.length > 0) {
+                  res.json(this);
+                  //res.send(JSON.stringify(this));
+              } else if (this.length === 0) {
+                  res.send("Incorrect Album Specified");
+              }
+          });
+  } else {
+      res.send("No Album Specified!");
+  }
+});
 
 // determine if we want to run the http server. Loaded from config
 if (config.runServer) {

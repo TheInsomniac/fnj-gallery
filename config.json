@@ -7,6 +7,6 @@
     "use": "sets",
     "host":"127.0.0.1",
     "port":"8080",
-    "debug":false,
+    "node_env":"production",
     "runServer":true
 }
