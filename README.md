@@ -17,7 +17,7 @@ edit config.json to suit your needs.
 
 If '"node_env": "development"' then json files will be written for the data received from
 Flickr to 'tmp' for inspection purposes and the JS files served will be non-minified for easier debugging. 
-If '"runServer": false' as well then the webserver will not start either. The photoset/collection data will be written and then the app
+If '"runServer": "false" as well then the webserver will not start either. The photoset/collection data will be written and then the app
 will exit.  
 
 Else, set to "production" to disable this behavior. JSON files will not be written and JS files served will be the minified versions.    
@@ -73,5 +73,14 @@ run node REPL:
 **Voila!**
 
 ###Flickr sets/collections changes:  
-*The album data is generated upon the startup of node and is kept in memory as-is. If changes are made to your photosets on Flickr then either restart the app or go to **http://server.url/albums/update** to force a regeneration*  
+*The album data is generated upon the startup of node and is kept in memory as-is. If changes are made to your photosets on Flickr then either restart the app or go to **http://server.url/albums?update=true** to force a regeneration*  
 
+##API:  
+####Obtain list of photosets:  
+    /albums?return=photosets  
+####Obtain list of collections:  
+    /albums?return=collections  
+####Update photoset and collections cache:  
+    /albums?update=true  
+####Obtain photos from a photoset/collection:  
+    /photos?album=FLICKR_ALBUM_ID  
