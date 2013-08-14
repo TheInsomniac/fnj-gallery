@@ -1,1 +1,1 @@
-function getQueryVariable(a){var c=window.location.search.substring(1);var d=c.split("&");for(var b=0;b<d.length;b++){var e=d[b].split("=");if(e[0]==a){return e[1]}}return(false)};
+function getQueryVariable(a){for(var b=window.location.search.substring(1).split("&"),c=0;c<b.length;c++){var d=b[c].split("=");if(d[0]==a)return d[1]}return!1}
