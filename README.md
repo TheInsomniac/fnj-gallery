@@ -77,9 +77,9 @@ run node REPL:
 
 ##API:  
 ####Obtain list of photosets:  
-    /albums?return=photosets  
+    /albums?request=photosets  
 ####Obtain list of collections:  
-    /albums?return=collections  
+    /albums?request=collections  
 ####Update photoset and collections cache:  
     /albums?update=true  
 ####Obtain photos from a photoset/collection:  

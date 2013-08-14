@@ -1,4 +1,4 @@
-function getStaticFiles(express, app, debug, fs, config) {
+function getStaticFiles(express, app, config) {
   "use strict";
   // exposes site-wide css files
   app.use(express.static(__dirname + "/static/css"));

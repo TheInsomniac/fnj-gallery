@@ -1,4 +1,4 @@
-function api(express, app, debug, fs, config) {
+function api(app, debug, fs, config) {
   "use strict";
   var flickr = require(__dirname + "/lib/flickr.js"),
       USER_ID = config.user_id,
@@ -6,8 +6,8 @@ function api(express, app, debug, fs, config) {
       OAUTH_SECRET = config.oauth_secret;
 
   // create empty variables to hold album data (we'll call this a cache :P )
-  var photosets = null;
-  var collections = null;
+  var photosets = null,
+      collections = null;
 
   // load photoset data
   flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
@@ -29,12 +29,12 @@ function api(express, app, debug, fs, config) {
     }
   });
 
-  // exposes "/albums?return=[photosets|collections]"
+  // exposes "/albums?request=[photosets|collections]"
   // and "/albums?update=true"
   app.get("/albums", function (req, res) {
-    if (req.query.return === "collections") {
+    if (req.query.request === "collections") {
       res.json(collections);
-    } else if (req.query.return === "photosets") {
+    } else if (req.query.request === "photosets") {
       res.json(photosets);
     } else if (req.query.update === "true") {
       flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
@@ -43,11 +43,11 @@ function api(express, app, debug, fs, config) {
       flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
         collections = this;
       });
-      res.json({"Photosets":"Updated", "Collections":"Updated"});
+      res.json(200, {"Photosets": "Updated", "Collections": "Updated"});
     } else {
-      res.json(404, {"Error":"Please specify return type",
-               "Return Type":["?return=collections","?return=photosets"],
-               "Update Cache":"?update=true"});
+      res.json(404, {"Error": "Please specify reqest type",
+               "Request Type": ["?request=collections", "?request=photosets"],
+               "Update Cache": "?update=true"});
     }
   });
 
@@ -62,12 +62,12 @@ function api(express, app, debug, fs, config) {
               "-parsed.json", JSON.stringify(this, null, 4));
           }
         } else {
-          res.json(404, {"Error":"Incorrect Album Specified"});
+          res.json(404, {"Error": "Incorrect Album Specified"});
         }
       });
     } else {
-      res.json(404, {"Error":"No Album Specified!",
-                "Usage":"?photos=ALBUM_ID"});
+      res.json(404, {"Error": "No Album Specified!",
+                "Usage": "?photos=ALBUM_ID"});
     }
   });
 }

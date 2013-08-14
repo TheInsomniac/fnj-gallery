@@ -20,15 +20,15 @@ if (config.node_env === "development") {
 
 // retrieve static file settings
 var getStaticFiles = require("./static").getStaticFiles;
-new getStaticFiles(express, app, debug, fs, config);
+var _getStaticFiles = new getStaticFiles(express, app, config);
 
 // retrieve routes api from api.js
 var api = require("./api").api;
-new api(express, app, debug, fs, config);
+var _api = new api(app, debug, fs, config);
 
 // determine if we want to run the http server. Loaded from config
 if (config.runServer) {
-  app.listen(port, function(){
+  app.listen(port, function () {
     "use strict";
     console.log("Server listening on:\nhttp://" + host + ":" + port +
                 "\nPress CTRL-C to terminate");

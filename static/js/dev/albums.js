@@ -1,5 +1,5 @@
 function getCollections() {
-  $.getJSON("/albums?return=collections", function(data){
+  $.getJSON("/albums?request=collections", function(data){
     var items = [];
     //convert object to array so that browsers sort the same.
     //jQuery .each traverses differently in various browsers.
@@ -21,7 +21,7 @@ function getCollections() {
 
 function getSets() {
   var items = [];
-  $.getJSON("/albums?return=photosets", function(data){
+  $.getJSON("/albums?request=photosets", function(data){
     //convert object to array so that browsers sort the same.
     //jQuery .each traverses differently in various browsers.
     var keys = Object.keys(data);
