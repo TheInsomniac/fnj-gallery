@@ -5,27 +5,23 @@ function api(app, debug, fs, config) {
       OAUTH_TOKEN = config.oauth_token,
       OAUTH_SECRET = config.oauth_secret;
 
-  // create empty variables to hold album data (we'll call this a cache :P )
-  var photosets = null,
-      collections = null;
-
   // load photoset data
   flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-    photosets = this;
+    albums.photosets = this;
     if (debug) {
       //console.log(JSON.stringify(albums, null, 4));
       fs.writeFileSync(__dirname + "/tmp/sets-parsed.json",
-        JSON.stringify(photosets, null, 4));
+        JSON.stringify(albums.photosets, null, 4));
     }
   });
 
   // load collections data
   flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-    collections = this;
+    albums.collections = this;
     if (debug) {
       //console.log(JSON.stringify(albums, null, 4));
       fs.writeFileSync(__dirname + "/tmp/collections-parsed.json",
-        JSON.stringify(collections, null, 4));
+        JSON.stringify(albums.collections, null, 4));
     }
   });
 
@@ -33,15 +29,15 @@ function api(app, debug, fs, config) {
   // and "/albums?update=true"
   app.get("/albums", function (req, res) {
     if (req.query.request === "collections") {
-      res.json(collections);
+      res.json(albums.collections);
     } else if (req.query.request === "photosets") {
-      res.json(photosets);
+      res.json(albums.photosets);
     } else if (req.query.update === "true") {
       flickr.getUserPhotosets(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-        photosets = this;
+        albums.photosets = this;
       });
       flickr.getUserCollections(OAUTH_TOKEN, OAUTH_SECRET, USER_ID, function () {
-        collections = this;
+        albums.collections = this;
       });
       res.json(200, {"Photosets": "Updated", "Collections": "Updated"});
     } else {
@@ -67,7 +63,7 @@ function api(app, debug, fs, config) {
       });
     } else {
       res.json(404, {"Error": "No Album Specified!",
-                "Usage": "?photos=ALBUM_ID"});
+                "Usage": "?album=ALBUM_ID"});
     }
   });
 }
