@@ -1,1 +1,2 @@
-$.loadImage=function(d){return $.Deferred(function(b){function c(){a.onload=null;a.onerror=null;a.onabort=null;b.reject(a)}var a=new Image;a.onload=function(){a.onload=null;a.onerror=null;a.onabort=null;b.resolve(a)};a.onerror=c;a.onabort=c;a.src=d}).promise()};
+// http://aboutcode.net/2013/01/09/load-images-with-jquery-deferred.html
+$.loadImage=function(e){var t=function(t){function r(){s();t.resolve(n)}function i(){s();t.reject(n)}function s(){n.onload=null;n.onerror=null;n.onabort=null}var n=new Image;n.onload=r;n.onerror=i;n.onabort=i;n.src=e};return $.Deferred(t).promise()};

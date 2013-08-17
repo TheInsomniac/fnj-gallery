@@ -43,18 +43,18 @@ function getSets() {
 }
 
 function slideOut(items) {
-  var $title = $(document).attr('title');
+  var $page = window.location.pathname;
   var $slideout = $("#slideclick").parent();
   $('#slidecontent ul').append(items.join(''));
   $("#slideclick").on("click", function () {
     if ($slideout.hasClass("popped")) {
       $slideout.animate({left: '-222px'}, {queue: false, duration: 500}).removeClass("popped");
       //$('.depth').css("opacity", "1");
-      if ($title === "Photo Gallery") $('#slideclick').pointPoint();
+      if ($page === "/") $('#slideclick').pointPoint();
     } else {
       $slideout.animate({left: "0px" }, {queue: false, duration: 500}).addClass("popped");
       //$('.depth').css("opacity", "0");
-      if ($title === "Photo Gallery") $('#slideclick').pointPoint().destroyPointPoint();
+      if ($page === "/") $('#slideclick').pointPoint().destroyPointPoint();
     }
   });
   $('ul ul').hide();
@@ -63,5 +63,5 @@ function slideOut(items) {
     $(this).parent().find('ul').toggle('slow');
     $('i.icon-folder-close').toggleClass('icon-folder-open');
   });
-  if ($title === "Photo Gallery") $('#slideclick').pointPoint();
+  if ($page === "/") $('#slideclick').pointPoint();
 }
