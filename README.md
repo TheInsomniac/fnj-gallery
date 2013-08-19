@@ -1,5 +1,8 @@
 #Flickr-NodeJS-JQuery (FNJ Gallery)
 
+**Version 2 using Jade can be found here:**  
+[Version 2](https://github.com/manxam/fnj-gallery-V2)
+
 *Note: This is my first attempt at **anything** javascript / NODE.js*  
 This, appearance wise, is identical to my "Flickr-Python-JQuery" gallery but is based  
 entirely on node.js and does not use static JSON files.  
